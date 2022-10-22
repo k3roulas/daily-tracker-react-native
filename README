@@ -1,0 +1,8 @@
+# daily-tracker-react-native
+
+Work in progress.
+React native tracker application.
+
+The purpose of this application is to allow a user to manually track, on a daily basis, any metric (weight, ... )
+It needs access to the user Google drive to store the data.
+
