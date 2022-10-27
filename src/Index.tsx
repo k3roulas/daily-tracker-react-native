@@ -4,10 +4,11 @@ import React from 'react';
 import { AppRegistry, SafeAreaView, StyleSheet, Text } from 'react-native';
 import { Link, NativeRouter, Outlet, Route, Routes } from 'react-router-native';
 
-import { Add } from './component/Add';
 import { Home } from './component/Home';
 import { Layout } from './component/Layout';
+import { MeasureScreen } from './component/MeasureScreen';
 import { NoMatch } from './component/NoMatch';
+import { MeasuresProvider } from './provider/measuresProvider';
 import { UserProvider } from './provider/userProvider';
 
 export const App = () => {
@@ -24,17 +25,19 @@ export const App = () => {
 
   return (
     <UserProvider>
-      <NativeRouter>
-        <SafeAreaView>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="add" element={<Add />} />
-              <Route path="*" element={<NoMatch />} />
-            </Route>
-          </Routes>
-        </SafeAreaView>
-      </NativeRouter>
+      <MeasuresProvider>
+        <NativeRouter>
+          <SafeAreaView>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Home />} />
+                <Route path="measure" element={<MeasureScreen />} />
+                <Route path="*" element={<NoMatch />} />
+              </Route>
+            </Routes>
+          </SafeAreaView>
+        </NativeRouter>
+      </MeasuresProvider>
     </UserProvider>
   );
 };

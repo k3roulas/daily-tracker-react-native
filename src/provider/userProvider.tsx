@@ -1,16 +1,8 @@
 import {
   GoogleSignin,
-  GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {
-  ReactElement,
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { Text } from 'react-native';
 
 import { ProviderType } from '../type/provider';
