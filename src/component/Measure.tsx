@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from 'react';
 import { Button, Text, TextInput, View } from 'react-native';
-import { useNavigate } from 'react-router';
 
 import { getCurrentDate, getDateWithOffset } from '../lib/date';
 import { MeasureType } from '../type/provider/measuresProvider';
@@ -11,10 +10,15 @@ interface Props {
   handleOk: (measure: MeasureType) => void;
 }
 
-export const Measure: FC<Props> = ({ measure, handleChangeDate, handleOk }) => {
+export const Measure: FC<Props> = ({
+  measure,
+  handleChangeDate,
+  handleOk,
+  navigation,
+}) => {
   const [date, setDate] = useState(measure.date);
   const [weight, setWeight] = useState(measure.weight);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const weightStep = 0.1;
 
@@ -50,7 +54,7 @@ export const Measure: FC<Props> = ({ measure, handleChangeDate, handleOk }) => {
   };
 
   const handleCancel = () => {
-    navigate('/');
+    navigation.navigate('Home');
   };
 
   return (

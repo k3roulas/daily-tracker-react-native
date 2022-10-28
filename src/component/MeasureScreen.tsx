@@ -1,19 +1,16 @@
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
-import { useNavigate } from 'react-router-native';
+import { View } from 'react-native';
 
-import { getCurrentDate, getDateWithOffset } from '../lib/date';
+import { getCurrentDate } from '../lib/date';
 import { getMeasure } from '../lib/measure';
 import { useMeasures } from '../provider/measuresProvider';
-import { useUser } from '../provider/userProvider';
-import { styles } from '../styles';
+import { MeasureScreenProps } from '../type/navigation';
 import { MeasureType } from '../type/provider/measuresProvider';
 import { Measure } from './Measure';
 
-export const MeasureScreen = () => {
+export const MeasureScreen = ({ navigation }: MeasureScreenProps) => {
   const { measures, saveMeasure } = useMeasures();
-  const navigate = useNavigate();
 
   const [measure, setMeasure] = useState<MeasureType>(
     getMeasure(getCurrentDate(), measures),
@@ -25,7 +22,7 @@ export const MeasureScreen = () => {
 
   const handleOk = (measure: MeasureType) => {
     saveMeasure(measure);
-    navigate('/');
+    navigation.navigate('Home');
   };
 
   useEffect(() => {
@@ -43,6 +40,7 @@ export const MeasureScreen = () => {
             measure={measure}
             handleChangeDate={handleChangeDate}
             handleOk={handleOk}
+            navigation={navigation}
           />
         </View>
       </View>
