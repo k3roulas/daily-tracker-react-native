@@ -7,10 +7,14 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx'],
       rules: {
-        '@typescript-eslint/no-shadow': ['error'],
-        'no-shadow': 'on',
-        'no-undef': 'on',
-        'no-console': 1,
+        'react-hooks/exhaustive-deps': 0,
+        'react/react-in-jsx-scope': 'off',
+        '@typescript-eslint/no-catch-shadow': 0,
+        '@typescript-eslint/no-shadow': 'off',
+        'no-shadow': 'off',
+        'no-catch-shadow': 0,
+        'no-undef': 2,
+        'no-console': 0,
         'prettier/prettier': 2,
         '@typescript-eslint/explicit-module-boundary-types': 0,
         '@typescript-eslint/no-unused-vars': [
@@ -25,3 +29,7 @@ module.exports = {
     },
   ],
 };
+
+// 'no-shadow': 'off',
+// '@typescript-eslint/no-shadow': 'off',
+// 'no-undef': 2,

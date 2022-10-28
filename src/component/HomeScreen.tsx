@@ -1,5 +1,3 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { FC } from 'react';
 import { Button, Text, View } from 'react-native';
 
 import { useUser } from '../provider/userProvider';

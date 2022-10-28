@@ -12,12 +12,11 @@ import { useUser } from './userProvider';
 
 export const MeasuresContext = createContext<MeasuresContextType>({
   measures: {},
-  saveMeasure: (m: MeasureType) => {},
+  saveMeasure: null,
 });
 
 export const MeasuresProvider: ProviderType = ({ children }) => {
   const [measures, setMeasures] = useState<MeasuresType>({});
-  const fileName = 'daily.tracker.json';
   const { user } = useUser();
 
   const saveMeasure = async (measure: MeasureType) => {

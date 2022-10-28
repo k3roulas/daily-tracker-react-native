@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
@@ -20,8 +19,8 @@ export const MeasureScreen = ({ navigation }: MeasureScreenProps) => {
     setMeasure(getMeasure(date, measures));
   };
 
-  const handleOk = (measure: MeasureType) => {
-    saveMeasure(measure);
+  const handleOk = (m: MeasureType) => {
+    saveMeasure(m);
     navigation.navigate('Home');
   };
 
@@ -47,7 +46,8 @@ export const MeasureScreen = ({ navigation }: MeasureScreenProps) => {
       <View
         style={{
           backgroundColor: 'gray',
-        }}></View>
+        }}
+      />
     </View>
   );
 };

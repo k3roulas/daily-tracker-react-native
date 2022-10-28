@@ -2,7 +2,7 @@ export type UserContextType = {
   user: User | null;
   error: string | null;
   signOut: () => void;
-};
+} | null;
 
 export interface User {
   id: string;

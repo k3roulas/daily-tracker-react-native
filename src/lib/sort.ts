@@ -7,11 +7,3 @@ export const sortObjectsPerAttribute = (measures: MeasuresType) =>
       accumulator[currentValue] = measures[currentValue];
       return accumulator;
     }, {});
-
-interface Item {
-  date: string;
-}
-
-interface Store {
-  [index: string]: Item;
-}
