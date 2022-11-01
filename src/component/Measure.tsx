@@ -6,10 +6,9 @@ import {
   Surface,
   Text,
   TextInput,
-  shadow,
 } from 'react-native-paper';
 
-import { getCurrentDate, getDateWithOffset } from '../lib/date';
+import { formatDate, getCurrentDate, getDateWithOffset } from '../lib/date';
 import { MeasureType } from '../type/provider/measuresProvider';
 
 interface Props {
@@ -35,6 +34,9 @@ export const Measure: FC<Props> = ({
   useEffect(() => {
     setDate(measure.date);
     setWeight(measure.weight);
+    setFood(measure.food);
+    setSport(measure.sport);
+    setMeditation(measure.meditation);
   }, [measure]);
 
   const handleIncreaseWeight = () => {
@@ -71,7 +73,7 @@ export const Measure: FC<Props> = ({
     <View style={styles.mainContainer}>
       <ScrollView>
         <View style={styles.dateContainer}>
-          <Text variant="displaySmall">{measure.date}</Text>
+          <Text variant="displaySmall">{formatDate(measure.date)}</Text>
           <View style={styles.dateButtonsContainer}>
             <Button
               style={styles.dateButton}
@@ -185,11 +187,17 @@ export const Measure: FC<Props> = ({
             handleOk({
               date,
               weight,
+              food,
+              sport,
+              meditation,
             })
           }>
           OK
         </Button>
-        <Button mode="text" onPress={() => handleCancel()}>
+        <Button
+          style={styles.cancelButton}
+          mode="text"
+          onPress={() => handleCancel()}>
           Cancel
         </Button>
       </View>
@@ -253,9 +261,13 @@ export const styles = StyleSheet.create({
     marginTop: 20,
   },
   actionsContainer: {
-    paddingTop: 10,
+    paddingTop: 20,
     paddingBottom: 10,
     paddingLeft: 20,
     paddingRight: 20,
+  },
+  cancelButton: {
+    marginTop: 20,
+    marginBottom: 15,
   },
 });

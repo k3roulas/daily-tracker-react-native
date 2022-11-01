@@ -24,6 +24,7 @@ export const MeasuresProvider: ProviderType = ({ children }) => {
     const sortedMeasures = sortObjectsPerAttribute(measures);
     setMeasures(sortedMeasures);
     saveMeasuresToStore(sortedMeasures);
+    console.log(sortedMeasures);
   };
 
   const loadMeasures = async () => {

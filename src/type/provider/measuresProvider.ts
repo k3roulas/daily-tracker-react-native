@@ -7,6 +7,9 @@ export type MeasuresContextType = {
 export interface MeasureType {
   date: string;
   weight: string;
+  food: string;
+  sport: string;
+  meditation: string;
 }
 
 export interface MeasuresType {

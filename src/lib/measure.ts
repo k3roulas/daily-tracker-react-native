@@ -11,6 +11,9 @@ export const getMeasure = (
     found ?? {
       date,
       weight: keys.length === 0 ? 0 : measures[keys[keys.length - 1]].weight,
+      food: 'undefined',
+      sport: 'undefined',
+      meditation: 'undefined',
     }
   );
 };
