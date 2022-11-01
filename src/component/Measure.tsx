@@ -1,5 +1,13 @@
 import { FC, useEffect, useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import {
+  Button,
+  SegmentedButtons,
+  Surface,
+  Text,
+  TextInput,
+  shadow,
+} from 'react-native-paper';
 
 import { getCurrentDate, getDateWithOffset } from '../lib/date';
 import { MeasureType } from '../type/provider/measuresProvider';
@@ -18,7 +26,9 @@ export const Measure: FC<Props> = ({
 }) => {
   const [date, setDate] = useState(measure.date);
   const [weight, setWeight] = useState(measure.weight);
-  // const navigate = useNavigate();
+  const [food, setFood] = useState('undefined');
+  const [sport, setSport] = useState('undefined');
+  const [meditation, setMeditation] = useState('undefined');
 
   const weightStep = 0.1;
 
@@ -58,32 +68,194 @@ export const Measure: FC<Props> = ({
   };
 
   return (
-    <View>
-      <Text>Date</Text>
-      <Text>{measure.date}</Text>
-      <Button title="Today" onPress={handleDateToday} />
-      <Button title=">" onPress={handleDateIncrease} />
-      <Button title="<" onPress={handleDateDecrease} />
-      <Text>Weight</Text>
-      <TextInput
-        keyboardType="numeric"
-        onChangeText={handleChangeWeight}
-        value={weight}
-        maxLength={5}
-      />
-      <Button title=">" onPress={handleIncreaseWeight} />
-      <Button title="<" onPress={handleDecreaseWeight} />
-      <Text>Action</Text>
-      <Button
-        title="OK"
-        onPress={() =>
-          handleOk({
-            date,
-            weight,
-          })
-        }
-      />
-      <Button title="Cancel" onPress={() => handleCancel()} />
+    <View style={styles.mainContainer}>
+      <ScrollView>
+        <View style={styles.dateContainer}>
+          <Text variant="displaySmall">{measure.date}</Text>
+          <View style={styles.dateButtonsContainer}>
+            <Button
+              style={styles.dateButton}
+              mode="contained"
+              onPress={handleDateDecrease}>
+              -
+            </Button>
+            <Button
+              style={styles.dateButton}
+              mode="contained"
+              onPress={handleDateToday}>
+              Today
+            </Button>
+            <Button
+              style={styles.dateButton}
+              mode="contained"
+              onPress={handleDateIncrease}>
+              +
+            </Button>
+          </View>
+        </View>
+        <Surface style={styles.surface}>
+          <Text variant="titleMedium">Weight</Text>
+          <View style={styles.weightContainer}>
+            <TextInput
+              style={styles.weightInput}
+              mode="outlined"
+              keyboardType="numeric"
+              onChangeText={handleChangeWeight}
+              value={weight}
+              maxLength={5}
+            />
+            <View style={styles.inputTextButtonsContainer}>
+              <Button
+                style={styles.inputTextButton}
+                mode="contained"
+                onPress={handleDecreaseWeight}>
+                -
+              </Button>
+              <Button
+                style={styles.inputTextButton}
+                mode="contained"
+                onPress={handleIncreaseWeight}>
+                +
+              </Button>
+            </View>
+          </View>
+
+          <View style={styles.simpleMeasureContainer}>
+            <Text variant="titleMedium">Food</Text>
+            <SegmentedButtons
+              value={food}
+              onValueChange={setFood}
+              buttons={[
+                { value: 'undefined', label: 'undefined' },
+                { value: 'good', label: 'good' },
+                { value: 'bad', label: 'bad' },
+              ]}
+            />
+          </View>
+
+          <View style={styles.simpleMeasureContainer}>
+            <Text variant="titleMedium">Sport</Text>
+            <SegmentedButtons
+              value={sport}
+              onValueChange={setSport}
+              buttons={[
+                {
+                  value: 'undefined',
+                  label: 'undefined',
+                },
+                {
+                  value: 'yes',
+                  label: 'yes',
+                },
+                {
+                  value: 'no',
+                  label: 'no',
+                },
+              ]}
+            />
+          </View>
+
+          <View style={styles.simpleMeasureContainer}>
+            <Text variant="titleMedium">Meditation</Text>
+            <SegmentedButtons
+              value={meditation}
+              onValueChange={setMeditation}
+              buttons={[
+                {
+                  value: 'undefined',
+                  label: 'undefined',
+                },
+                {
+                  value: 'yes',
+                  label: 'yes',
+                },
+                {
+                  value: 'no',
+                  label: 'no',
+                },
+              ]}
+            />
+          </View>
+        </Surface>
+      </ScrollView>
+      <View style={styles.actionsContainer}>
+        <Button
+          mode="contained"
+          onPress={() =>
+            handleOk({
+              date,
+              weight,
+            })
+          }>
+          OK
+        </Button>
+        <Button mode="text" onPress={() => handleCancel()}>
+          Cancel
+        </Button>
+      </View>
     </View>
   );
 };
+
+export const styles = StyleSheet.create({
+  surface: {
+    alignItems: 'flex-start',
+    paddingTop: 20,
+    paddingRight: 20,
+    paddingBottom: 20,
+    paddingLeft: 20,
+    marginTop: 0,
+    marginRight: 20,
+    marginBottom: 20,
+    marginLeft: 20,
+    borderRadius: 10,
+  },
+  weightContainer: {
+    flexDirection: 'row',
+  },
+  mainContainer: {
+    flex: 1,
+  },
+  dateContainer: {
+    alignItems: 'center',
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 0,
+    paddingLeft: 10,
+    marginTop: 0,
+    marginRight: 20,
+    marginBottom: 20,
+    marginLeft: 20,
+  },
+  dateButtonsContainer: {
+    flexDirection: 'row',
+  },
+  dateButton: {
+    margin: 10,
+  },
+  weightInput: {
+    minWidth: 85,
+    textAlign: 'center',
+  },
+  inputTextButtonsContainer: {
+    flexDirection: 'row',
+    marginLeft: 10,
+    marginBottom: 0,
+    marginTop: 7,
+  },
+  inputTextButton: {
+    marginTop: 4,
+    marginRight: 10,
+    marginBottom: 3,
+    marginLeft: 10,
+  },
+  simpleMeasureContainer: {
+    marginTop: 20,
+  },
+  actionsContainer: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+});

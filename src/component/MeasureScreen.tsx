@@ -29,25 +29,11 @@ export const MeasureScreen = ({ navigation }: MeasureScreenProps) => {
   }, [measures]);
 
   return (
-    <View>
-      <View
-        style={{
-          backgroundColor: 'green',
-        }}>
-        <View>
-          <Measure
-            measure={measure}
-            handleChangeDate={handleChangeDate}
-            handleOk={handleOk}
-            navigation={navigation}
-          />
-        </View>
-      </View>
-      <View
-        style={{
-          backgroundColor: 'gray',
-        }}
-      />
-    </View>
+    <Measure
+      measure={measure}
+      handleChangeDate={handleChangeDate}
+      handleOk={handleOk}
+      navigation={navigation}
+    />
   );
 };
