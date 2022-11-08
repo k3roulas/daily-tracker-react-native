@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Surface, Text } from 'react-native-paper';
 
 import BmiRangeImage from '../static/bmi_slider_adult_2.png';
 
-export const Bmi = () => {
+export const Bmi: FC = () => {
   const defaultWidth = 822;
   const [widthImage, setWidthImage] = useState(0);
   const weight = 85.5;
@@ -33,44 +33,76 @@ export const Bmi = () => {
 
   const onLayout = event => {
     const { width } = event.nativeEvent.layout;
-    setWidthImage(width);
+    setWidthImage(width - 40);
   };
 
   return (
-    <View onLayout={onLayout} style={{ margin: 10 }}>
-      <Text>Your weight : {weight} kg</Text>
+    <Surface onLayout={onLayout} style={styles.surface}>
       <Text>
         BMI : {bmi.toFixed(2)} {category.label}
       </Text>
       <Text>
-        Healthly weight should be between {healthlyRange.min.toFixed(2)} kg and{' '}
-        {healthlyRange.max.toFixed(2)} kg
+        Healthly weight should be between {healthlyRange.min.toFixed(1)} kg and{' '}
+        {healthlyRange.max.toFixed(1)} kg
       </Text>
 
       <View>
-        <Text style={{ marginLeft: cursorPosition }}>I</Text>
         <Image
           style={{
-            width: widthImage,
-            height: (widthImage * 41) / 825,
-            resizeMode: 'contain',
-            margin: 0,
-            padding: 0,
+            ...{
+              width: widthImage,
+              height: (widthImage * 41) / 825,
+            },
+            ...styles.image,
           }}
           source={BmiRangeImage}
         />
+        <Text
+          style={{
+            ...{
+              marginLeft: cursorPosition,
+            },
+            ...styles.cursor,
+          }}>
+          L
+        </Text>
         <View>
           <Text style={{ marginLeft: position18 }}>18.5</Text>
-          <Text style={{ marginLeft: position25, position: 'absolute' }}>
+          <Text style={{ ...{ marginLeft: position25 }, ...styles.labelAxis }}>
             25
           </Text>
-          <Text style={{ marginLeft: position30, position: 'absolute' }}>
+          <Text style={{ ...{ marginLeft: position30 }, ...styles.labelAxis }}>
             30
           </Text>
         </View>
       </View>
-    </View>
+    </Surface>
   );
 };
 
-const style = StyleSheet.create({});
+const styles = StyleSheet.create({
+  surface: {
+    paddingTop: 20,
+    paddingRight: 20,
+    paddingBottom: 20,
+    paddingLeft: 20,
+    marginTop: 0,
+    marginRight: 20,
+    marginBottom: 20,
+    marginLeft: 20,
+    borderRadius: 10,
+  },
+  image: {
+    resizeMode: 'contain',
+    margin: 0,
+    padding: 0,
+  },
+  cursor: {
+    position: 'absolute',
+    width: 3,
+    backgroundColor: 'black',
+  },
+  labelAxis: {
+    position: 'absolute',
+  },
+});

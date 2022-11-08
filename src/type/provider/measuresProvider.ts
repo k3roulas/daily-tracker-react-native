@@ -1,6 +1,7 @@
 // TODO use type or interface
 export type MeasuresContextType = {
   measures: MeasuresType;
+  last: MeasureType | null;
   saveMeasure: (m: MeasureType) => void | null;
 };
 

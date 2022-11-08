@@ -13,6 +13,7 @@ import { useUser } from './userProvider';
 export const MeasuresContext = createContext<MeasuresContextType>({
   measures: {},
   saveMeasure: null,
+  last: null,
 });
 
 export const MeasuresProvider: ProviderType = ({ children }) => {

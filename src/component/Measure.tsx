@@ -15,13 +15,14 @@ interface Props {
   measure: MeasureType;
   handleChangeDate: (date: string) => void;
   handleOk: (measure: MeasureType) => void;
+  goHome: () => void;
 }
 
 export const Measure: FC<Props> = ({
   measure,
   handleChangeDate,
   handleOk,
-  navigation,
+  goHome,
 }) => {
   const [date, setDate] = useState(measure.date);
   const [weight, setWeight] = useState(measure.weight);
@@ -66,7 +67,7 @@ export const Measure: FC<Props> = ({
   };
 
   const handleCancel = () => {
-    navigation.navigate('Home');
+    goHome();
   };
 
   return (

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
 
 import { getCurrentDate } from '../lib/date';
 import { getMeasure } from '../lib/measure';
@@ -28,12 +27,16 @@ export const MeasureScreen = ({ navigation }: MeasureScreenProps) => {
     setMeasure(getMeasure(getCurrentDate(), measures));
   }, [measures]);
 
+  const goHome = () => {
+    navigation.navigate('Home');
+  };
+
   return (
     <Measure
       measure={measure}
       handleChangeDate={handleChangeDate}
       handleOk={handleOk}
-      navigation={navigation}
+      goHome={goHome}
     />
   );
 };

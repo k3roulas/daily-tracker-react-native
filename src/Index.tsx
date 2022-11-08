@@ -43,7 +43,7 @@ export const App = () => {
                 name="Home"
                 component={HomeScreen}
                 options={{
-                  title: 'My home',
+                  title: 'Daily tracker',
                 }}
               />
               <Stack.Screen name="Measure" component={MeasureScreen} />
