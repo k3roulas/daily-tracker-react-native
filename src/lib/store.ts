@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import {
   GDrive,
@@ -47,4 +48,24 @@ export const loadMeasuresFromStore = async () => {
   const id = await getFileId(gdrive);
 
   return id ? await gdrive.files.getJson(id) : {};
+};
+
+const storeKey = '@settings';
+export const storeData = async value => {
+  try {
+    await AsyncStorage.setItem(storeKey, value);
+  } catch (e) {
+    // saving error
+  }
+};
+
+export const getData = async () => {
+  try {
+    const value = await AsyncStorage.getItem(storeKey);
+    if (value !== null) {
+      // value previously stored
+    }
+  } catch (e) {
+    // error reading value
+  }
 };
