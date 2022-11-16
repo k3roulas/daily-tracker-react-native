@@ -1,23 +1,30 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { View } from 'react-native';
 import {
   Button,
   Dialog,
   Paragraph,
   Portal,
-  Provider,
   TextInput,
 } from 'react-native-paper';
 
-export const Height = () => {
+type HeightProps = {
+  height: string;
+  setHeight: (h: string) => void;
+};
+
+export const Height: FC<HeightProps> = ({ height, setHeight }) => {
   const [visible, setVisible] = useState(false);
-  const [height, setHeight] = useState<string>('');
+  const [value, setValue] = useState(height);
 
   const showDialog = () => setVisible(true);
-  const hideDialog = () => setVisible(false);
+  const hideDialog = () => {
+    setVisible(false);
+    setHeight(value);
+  };
 
   const handleChange = (text: string) => {
-    setHeight(text.replace(/[^0-9]/g, ''));
+    setValue(text.replace(/[^0-9]/g, ''));
   };
 
   return (
@@ -32,7 +39,7 @@ export const Height = () => {
             <TextInput
               label="Height"
               mode="outlined"
-              value={height}
+              value={value}
               keyboardType="number-pad"
               onChangeText={handleChange}
             />

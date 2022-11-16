@@ -28,7 +28,7 @@ export const LineChart: FC<LineChartProps> = ({ params }) => {
             dimensions={dimensions}
             line={false}
           />
-          <G x={dimensions.curve.padding.left}>
+          <G x={dimensions.curve.padding.left} y={dimensions.curve.padding.top}>
             <Path d={curve} />
           </G>
           <XAxis

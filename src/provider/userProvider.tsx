@@ -14,9 +14,6 @@ export const UserProvider: ProviderType = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
 
   const signIn = async () => {
-    // setUser(defaultUser);
-    // return;
-
     try {
       await GoogleSignin.hasPlayServices();
       const result = await GoogleSignin.signIn();

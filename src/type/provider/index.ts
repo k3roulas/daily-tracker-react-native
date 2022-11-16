@@ -1,9 +1,9 @@
 import { ReactElement, ReactNode } from 'react';
 
-interface ProviderProps {
+type ProviderProps = {
   children: ReactNode;
-}
+};
 
-export interface ProviderType {
+export type ProviderType = {
   (props: ProviderProps): ReactElement;
-}
+};

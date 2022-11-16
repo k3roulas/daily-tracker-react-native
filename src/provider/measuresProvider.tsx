@@ -1,47 +1,43 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
+import { getMeasures, storeMeasures } from '../lib/localStore';
 import { sortObjectsPerAttribute } from '../lib/sort';
-import { loadMeasuresFromStore, saveMeasuresToStore } from '../lib/store';
 import { ProviderType } from '../type/provider';
 import {
   MeasureType,
   MeasuresContextType,
   MeasuresType,
 } from '../type/provider/measuresProvider';
-import { useUser } from './userProvider';
 
 export const MeasuresContext = createContext<MeasuresContextType>({
   measures: {},
-  saveMeasure: null,
-  last: null,
+  saveMeasure: () => {},
 });
 
 export const MeasuresProvider: ProviderType = ({ children }) => {
   const [measures, setMeasures] = useState<MeasuresType>({});
-  const { user } = useUser();
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const saveMeasure = async (measure: MeasureType) => {
     measures[measure.date] = measure;
     const sortedMeasures = sortObjectsPerAttribute(measures);
     setMeasures(sortedMeasures);
-    saveMeasuresToStore(sortedMeasures);
-    console.log(sortedMeasures);
+    storeMeasures(sortedMeasures);
   };
 
   const loadMeasures = async () => {
-    const measures = await loadMeasuresFromStore();
-    setMeasures(measures);
+    const fromDisk = await getMeasures();
+    fromDisk !== null && setMeasures(fromDisk);
+    setIsLoaded(true);
   };
 
   useEffect(() => {
-    if (user) {
-      loadMeasures();
-    }
-  }, [user]);
+    loadMeasures();
+  }, []);
 
   return (
     <MeasuresContext.Provider value={{ measures, saveMeasure }}>
-      {children}
+      {isLoaded && <>{children}</>}
     </MeasuresContext.Provider>
   );
 };

@@ -1,18 +1,16 @@
-// TODO use type or interface
 export type MeasuresContextType = {
   measures: MeasuresType;
-  last: MeasureType | null;
-  saveMeasure: (m: MeasureType) => void | null;
+  saveMeasure: (m: MeasureType) => void;
 };
 
-export interface MeasureType {
+export type MeasureType = {
   date: string;
   weight: string;
   food: string;
   sport: string;
   meditation: string;
-}
+};
 
-export interface MeasuresType {
+export type MeasuresType = {
   [index: string]: MeasureType;
-}
+};

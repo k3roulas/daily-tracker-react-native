@@ -1,10 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { settingsKey } from '../config/index';
+import { measuresKey, settingsKey } from '../config/index';
+import { MeasuresType } from '../type/provider/measuresProvider';
+import { SettingsType } from '../type/provider/settingsProvider';
 
-const storeData = async (key: string, value: string) => {
+const storeData = async (key: string, value: any) => {
   try {
-    await AsyncStorage.setItem(settingsKey, JSON.stringify(value));
+    await AsyncStorage.setItem(key, JSON.stringify(value));
   } catch (e) {
     // saving error
   }
@@ -13,21 +15,24 @@ const storeData = async (key: string, value: string) => {
 const getData = async (key: string) => {
   try {
     const value = await AsyncStorage.getItem(key);
-    const decoded = JSON.parse(value);
-    console.log('decoded', decoded);
-    return decoded;
-    // if (value !== null) {
-    //   // value previously stored
-    // }
+    return value ? JSON.parse(value) : null;
   } catch (e) {
     // error reading value
   }
 };
 
-export const storeHeight = settings => {
-  return storeData(settingsKey, settings);
+export const storeMeasures = (measures: MeasuresType) => {
+  storeData(measuresKey, measures);
 };
 
-export const getHeight = () => {
+export const getMeasures = async () => {
+  return await getData(measuresKey);
+};
+
+export const storeSettings = (settings: SettingsType) => {
+  storeData(settingsKey, settings);
+};
+
+export const getSettings = async (): Promise<SettingsType> => {
   return getData(settingsKey);
 };

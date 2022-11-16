@@ -8,7 +8,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import { HomeScreen } from './component/HomeScreen';
 import { MeasureScreen } from './component/MeasureScreen';
 import { MeasuresProvider } from './provider/measuresProvider';
-import { UserProvider } from './provider/userProvider';
+import { SettingsProvider } from './provider/settingsProvider';
 import { navTheme } from './style/navTheme';
 import { RootStackParamList } from './type/navigation';
 
@@ -28,7 +28,7 @@ export const App = () => {
 
   return (
     <PaperProvider>
-      <UserProvider>
+      <SettingsProvider>
         <MeasuresProvider>
           <NavigationContainer theme={navTheme}>
             <Stack.Navigator
@@ -50,7 +50,7 @@ export const App = () => {
             </Stack.Navigator>
           </NavigationContainer>
         </MeasuresProvider>
-      </UserProvider>
+      </SettingsProvider>
     </PaperProvider>
   );
 };

@@ -42,14 +42,14 @@ export const YAxis: FC<YAxisProps> = ({
             textAnchor={'end'}
             alignmentBaseline={'middle'}
             x={dimensions.curve.padding.left - 6}
-            y={scale(t)}>
+            y={scale(t) + dimensions.curve.padding.top}>
             {t.toFixed(2)}
           </SVGText>
           <Line
             x1={dimensions.curve.padding.left}
-            y1={scale(t)}
+            y1={scale(t) + dimensions.curve.padding.top}
             x2={dimensions.graph.width - dimensions.curve.padding.right}
-            y2={scale(t)}
+            y2={scale(t) + dimensions.curve.padding.top}
             stroke={'#d7d7d7'}
             strokeWidth="1"
           />

@@ -5,7 +5,7 @@ export const getMeasure = (
   measures: MeasuresType,
 ): MeasureType => {
   const found = measures[date] ?? null;
-  const keys = Object.keys(measures);
+  const keys = measures ? Object.keys(measures) : [];
 
   return (
     found ?? {
@@ -18,7 +18,7 @@ export const getMeasure = (
   );
 };
 
-export const getLastMeasure = (measures: MeasuresType): MeasureType | null => {
+export const getLastMeasure = (measures: MeasuresType): MeasureType => {
   const keys = Object.keys(measures);
   return measures[keys[keys.length - 1]];
 };

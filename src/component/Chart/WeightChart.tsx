@@ -1,42 +1,43 @@
-import dayjs from 'dayjs';
 import { FC, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { LayoutChangeEvent, StyleSheet } from 'react-native';
 import { Surface } from 'react-native-paper';
 
-import { WeightChartData, WeightChartParams } from '../../lib/chart';
+import { WeightChartParams } from '../../lib/chart';
 import { useMeasures } from '../../provider/measuresProvider';
+import { MeasuresType } from '../../type/provider/measuresProvider';
 import { LineChart } from './LineChart';
 import { getWeightChartParams } from './utils';
 
 export const WeightChart: FC = () => {
-  const [data, setData] = useState<WeightChartData | null>(null);
   const [width, setWidth] = useState(0);
   const [weightChartParams, setWeightChartParams] =
     useState<WeightChartParams | null>(null);
 
   const { measures } = useMeasures();
 
+  const hasEnoughMeasures = (m: MeasuresType): boolean =>
+    Object.keys(m).length > 1;
+
   useEffect(() => {
-    if (width !== 0) {
-      const data = Object.keys(measures).map(k => ({
-        date: dayjs(measures[k].date) as unknown as Date,
-        value: measures[k].weight as unknown as number, // PLN ??
-      }));
-      setData(data);
-      const params = getWeightChartParams(width, data);
+    if (width !== 0 && hasEnoughMeasures(measures)) {
+      const params = getWeightChartParams(width, measures);
       setWeightChartParams(params);
     }
   }, [measures]);
 
-  const onLayout = event => {
+  const onLayout = (event: LayoutChangeEvent) => {
     const { width: newWidth } = event.nativeEvent.layout;
     setWidth(newWidth);
 
-    if (data && newWidth !== width) {
-      const params = getWeightChartParams(newWidth, data);
+    if (hasEnoughMeasures && newWidth !== width) {
+      const params = getWeightChartParams(newWidth, measures);
       setWeightChartParams(params);
     }
   };
+
+  if (!hasEnoughMeasures(measures)) {
+    return <></>;
+  }
 
   return (
     <Surface style={styles.surface} onLayout={onLayout}>

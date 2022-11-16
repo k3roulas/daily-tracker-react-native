@@ -1,4 +1,5 @@
 import { curveBumpX, line, scaleLinear, scaleTime } from 'd3';
+import dayjs from 'dayjs';
 
 import { GRAPH_HEIGHT, GRAPH_PADDING, TICK_LENGHT } from '../../config';
 import {
@@ -10,6 +11,7 @@ import {
   WeightChartPoint,
   WeightChartScales,
 } from '../../lib/chart';
+import { MeasuresType } from '../../type/provider/measuresProvider';
 
 export const getAxisParams = (data: WeightChartData): AxisParams => {
   const minDate = data[0].date;
@@ -86,7 +88,7 @@ export const calculateDimensions = (
   },
   curve: {
     padding: {
-      top: 0,
+      top: 10,
       right: 30,
       bottom: 25,
       left: 50,
@@ -101,7 +103,7 @@ export const getTicks = (min: number, max: number): number[] => {
   const { niceMax, niceMin, tickSpacing } = niceScale(min, max, 5);
   let ticks = [];
   let current = niceMin + tickSpacing;
-  while (current < niceMax) {
+  while (current <= niceMax + tickSpacing * 0.1) {
     ticks.push(current);
     current = current + tickSpacing;
   }
@@ -111,8 +113,8 @@ export const getTicks = (min: number, max: number): number[] => {
 export const getYAxis = (min: number, max: number): AxisParam<number> => {
   const { niceMin, niceMax, tickSpacing } = niceScale(min, max, 5);
   let ticks = [];
-  let current = niceMin + tickSpacing;
-  while (current < niceMax) {
+  let current = niceMin;
+  while (current <= niceMax + tickSpacing * 0.1) {
     ticks.push(current);
     current = current + tickSpacing;
   }
@@ -171,11 +173,18 @@ const niceNum = (localRange: number, round: boolean): number => {
   return niceFraction * Math.pow(10, exponent);
 };
 
+const transformMeasuresForGraph = (measures: MeasuresType) =>
+  Object.keys(measures).map(k => ({
+    date: dayjs(measures[k].date).toDate(),
+    value: Number(measures[k].weight),
+  }));
+
 export const getWeightChartParams = (
   width: number,
-  data: WeightChartData,
+  measures: MeasuresType,
 ): WeightChartParams => {
   const dimensions = calculateDimensions(width, GRAPH_HEIGHT);
+  const data = transformMeasuresForGraph(measures);
   const axisParams = getAxisParams(data);
   const scales = getScales(dimensions, axisParams);
   const curve = makeGraph(data, scales);

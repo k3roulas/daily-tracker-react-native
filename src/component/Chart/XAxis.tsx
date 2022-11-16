@@ -21,17 +21,9 @@ export const XAxis: FC<XAxisProps> = ({ axisParam, scale, dimensions }) => {
     <Svg>
       <Line
         x1={dimensions.curve.padding.left}
-        y1={
-          dimensions.graph.height -
-          dimensions.curve.padding.top -
-          dimensions.curve.padding.bottom
-        }
+        y1={dimensions.graph.height - dimensions.curve.padding.bottom}
         x2={dimensions.graph.width - dimensions.curve.padding.right}
-        y2={
-          dimensions.graph.height -
-          dimensions.curve.padding.top -
-          dimensions.curve.padding.bottom
-        }
+        y2={dimensions.graph.height - dimensions.curve.padding.bottom}
         key={'axisLine'}
         stroke="#000000"
         strokeWidth="1"

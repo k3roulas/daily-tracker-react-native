@@ -1,4 +1,4 @@
-import { ScaleLinear } from 'd3';
+import { ScaleLinear, ScaleTime } from 'd3';
 
 export type WeightChartPoint = {
   date: Date;
@@ -41,7 +41,7 @@ export type AxisParams = {
   y: AxisParam<number>;
 };
 
-export type WeightChartScaleX = ScaleLinear<number, number>;
+export type WeightChartScaleX = ScaleTime<number, number>;
 export type WeightChartScaleY = ScaleLinear<number, number>;
 
 export type WeightChartScales = {

@@ -8,3 +8,4 @@ export const GRAPH_HEIGHT = 200;
 export const TICK_LENGHT = 6;
 
 export const settingsKey = '@settings';
+export const measuresKey = '@measures';

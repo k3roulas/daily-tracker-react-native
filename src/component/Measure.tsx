@@ -11,14 +11,14 @@ import {
 import { formatDate, getCurrentDate, getDateWithOffset } from '../lib/date';
 import { MeasureType } from '../type/provider/measuresProvider';
 
-interface Props {
+type MeasureProps = {
   measure: MeasureType;
   handleChangeDate: (date: string) => void;
   handleOk: (measure: MeasureType) => void;
   goHome: () => void;
-}
+};
 
-export const Measure: FC<Props> = ({
+export const Measure: FC<MeasureProps> = ({
   measure,
   handleChangeDate,
   handleOk,

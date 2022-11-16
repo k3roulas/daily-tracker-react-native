@@ -1,35 +1,41 @@
-import { FC, useEffect, useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
-import { Button, Surface, Text } from 'react-native-paper';
-import { ScreenStackHeaderRightView } from 'react-native-screens';
+import { FC, useState } from 'react';
+import { Image, LayoutChangeEvent, StyleSheet, View } from 'react-native';
+import { Surface, Text } from 'react-native-paper';
 
-import { getHeight, storeHeight } from '../lib/localStore';
-import { getLastMeasure } from '../lib/measure';
-import { useMeasures } from '../provider/measuresProvider';
+import { useSettings } from '../provider/settingsProvider';
 import BmiRangeImage from '../static/bmi_slider_adult_2.png';
+import BmiPointerImage from '../static/pointer.png';
 import { Height } from './Height';
 
-export const Bmi: FC = () => {
+const categories = [
+  { max: 18, label: 'an underweighted' },
+  { max: 25, label: 'a healthly' },
+  { max: 30, label: 'an overweighted' },
+  { max: 40, label: 'an obese' },
+  { max: 100, label: 'an extemely obese' },
+];
+
+type BmiProps = {
+  height: string;
+  weight: string;
+  hasHeight: boolean;
+  hasWeight: boolean;
+};
+
+export const Bmi: FC<BmiProps> = ({ height, weight, hasHeight, hasWeight }) => {
   const defaultWidth = 822;
-  const [height, setHeight] = useState('');
-  const [loading, setLoading] = useState(true);
   const [widthImage, setWidthImage] = useState(0);
-  const bmi = (weight / height / height) * 10000;
+  const { settings, saveSettings } = useSettings();
 
-  const categories = [
-    { max: 18, label: 'underweighted' },
-    { max: 25, label: 'healthly' },
-    { max: 30, label: 'overweighted' },
-    { max: 40, label: 'obese' },
-    { max: 100, label: 'extemely obese' },
-  ];
+  const hasBmi = hasHeight && hasWeight;
 
-  const { measures } = useMeasures();
-  const weight = getLastMeasure(measures);
+  const bmi = hasBmi
+    ? (Number(weight) / Number(height) / Number(height)) * 10000
+    : 0;
 
   const healthlyRange = {
-    min: (18.5 * height * height) / 10000,
-    max: (25 * height * height) / 10000,
+    min: (18.5 * Number(height) * Number(height)) / 10000,
+    max: (25 * Number(height) * Number(height)) / 10000,
   };
 
   const minGraph = 16.64;
@@ -37,48 +43,46 @@ export const Bmi: FC = () => {
   const position18 = ((18.5 - minGraph) * 58 * widthImage) / defaultWidth - 14;
   const position25 = ((25 - minGraph) * 58 * widthImage) / defaultWidth - 7;
   const position30 = ((30 - minGraph) * 58 * widthImage) / defaultWidth - 7;
-
   const category = categories.find(cat => bmi < cat.max);
 
-  const onLayout = event => {
+  const onLayout = (event: LayoutChangeEvent) => {
     const { width } = event.nativeEvent.layout;
     setWidthImage(width - 40);
   };
 
-  // storeSettings('185');
-
-  useEffect(() => {
-    let ignore = false;
-    const callAsync = async () => {
-      const settings = await getHeight();
-      if (!ignore) {
-        setHeight(settings);
-        setLoading(false);
-      }
-      getHeight();
-    };
-    callAsync();
-    return () => {
-      ignore = true;
-    };
-  }, []);
-
-  console.log('height', height);
+  const newHeight = (value: string) => {
+    saveSettings({ ...settings, height: value });
+  };
 
   return (
     <Surface onLayout={onLayout} style={styles.surface}>
-      {loading && <Text>Loading ...</Text>}
-      {!loading && height === '' && <Height height={height} />}
-      {!loading && height !== '' && (
+      {!hasHeight && <Height height={height} setHeight={newHeight} />}
+      {hasHeight && !hasWeight && (
+        <Text style={styles.noWeight}>
+          Click "Measure" button below to add weight
+        </Text>
+      )}
+
+      {hasBmi && category && (
         <>
-          {/* <Text>
-            BMI : {bmi.toFixed(2)} {category.label}
-          </Text>
+          <View style={styles.header}>
+            <Text variant="headlineMedium">BMI</Text>
+            <Text variant="headlineMedium">{bmi.toFixed(2)}</Text>
+          </View>
+
+          <Text>It suggests you have {category.label} weight.</Text>
           <Text>
             Healthly weight should be between {healthlyRange.min.toFixed(1)} kg
-            and {healthlyRange.max.toFixed(1)} kg
+            and {healthlyRange.max.toFixed(1)} kg.
           </Text>
           <View>
+            <Image
+              style={{
+                marginLeft: cursorPosition - 4,
+                ...styles.cursor,
+              }}
+              source={BmiPointerImage}
+            />
             <Image
               style={{
                 ...{
@@ -89,27 +93,24 @@ export const Bmi: FC = () => {
               }}
               source={BmiRangeImage}
             />
-            <Text
-              style={{
-                ...{
-                  marginLeft: cursorPosition,
-                },
-                ...styles.cursor,
-              }}>
-              L
-            </Text>
             <View>
               <Text style={{ marginLeft: position18 }}>18.5</Text>
               <Text
-                style={{ ...{ marginLeft: position25 }, ...styles.labelAxis }}>
+                style={{
+                  ...{ marginLeft: position25 },
+                  ...styles.labelAxis,
+                }}>
                 25
               </Text>
               <Text
-                style={{ ...{ marginLeft: position30 }, ...styles.labelAxis }}>
+                style={{
+                  ...{ marginLeft: position30 },
+                  ...styles.labelAxis,
+                }}>
                 30
               </Text>
             </View>
-          </View> */}
+          </View>
         </>
       )}
     </Surface>
@@ -134,11 +135,19 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   cursor: {
-    position: 'absolute',
-    width: 3,
-    backgroundColor: 'black',
+    resizeMode: 'contain',
+    height: 15,
+    width: 10,
   },
   labelAxis: {
     position: 'absolute',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  noWeight: {
+    textAlign: 'center',
   },
 });
